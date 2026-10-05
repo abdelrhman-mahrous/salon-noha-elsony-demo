@@ -1,0 +1,234 @@
+@import "tailwindcss";
+
+:root {
+  --primary-pink: #C2185B;
+  --primary-dark: #880E4F;
+  --accent-pink: #E91E8C;
+  --purple-color: #9C27B0;
+  --gold-color: #FFD700;
+  --gold-warm: #F7941D;
+  --scaffold-bg: #FFF0F5;
+  --card-bg: #FFFFFF;
+  --dark-gray: #2F322F;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  font-family: 'IBM Plex Sans Arabic', 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at 50% 10%, #201526 0%, #0d0914 100%);
+  min-height: 100vh;
+  color: #2F322F;
+  overflow-x: hidden;
+  user-select: none;
+}
+
+/* Shared phone-screen scrolling. The fixed bottom navigation is owned by the
+   iPhone viewport, so every screen reserves the same bottom area. */
+.screen-scroll {
+  width: 100%;
+  min-width: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 84px;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  -webkit-overflow-scrolling: touch;
+}
+
+.screen-scroll > * { min-width: 0; }
+.screen-scroll .no-scrollbar {
+  max-width: 100%;
+  overscroll-behavior-x: contain;
+}
+
+.home-slider {
+  cursor: grab;
+  touch-action: pan-x pan-y;
+}
+
+.home-slider:active {
+  cursor: grabbing;
+}
+
+/* Custom In-App Scrollbar */
+.app-scroll::-webkit-scrollbar {
+  width: 3px;
+}
+.app-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.app-scroll::-webkit-scrollbar-thumb {
+  background: rgba(194, 24, 91, 0.2);
+  border-radius: 999px;
+}
+.app-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(194, 24, 91, 0.4);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Ticker Animations for Billboards */
+@keyframes tickerLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes tickerRight {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.animate-ticker-left {
+  animation: tickerLeft 18s linear infinite;
+}
+
+.animate-ticker-right {
+  animation: tickerRight 18s linear infinite;
+}
+
+.animate-ticker-left:hover, .animate-ticker-right:hover {
+  animation-play-state: paused;
+}
+
+/* Modal and Banner Animations */
+@keyframes dropDownBanner {
+  0% {
+    transform: translate(-50%, -120%) scale(0.92);
+    opacity: 0;
+  }
+  60% {
+    transform: translate(-50%, 6px) scale(1.02);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, 0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUpModal {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleUpModal {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-banner {
+  animation: dropDownBanner 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slideUp {
+  animation: slideUpModal 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-scaleUp {
+  animation: scaleUpModal 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Active Press Effect */
+.active-press:active {
+  transform: scale(0.96);
+  transition: transform 0.1s ease;
+}
+
+/* Glass effect utilities */
+.glass-nav {
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.2px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 10px 25px rgba(194, 24, 91, 0.12), 0 4px 10px rgba(0, 0, 0, 0.04);
+}
+
+/* ── Responsive Page Layout ── */
+
+/* iPhone frame container: reserve the visual height after zoom */
+.iphone-zoom-container {
+  /* The frame is 844px tall. We reserve that height so siblings don't overlap.
+     When zoom changes this is overridden by inline style via JS.           */
+  height: 844px;
+}
+
+/* On large screens: put phone + controls side by side */
+@media (min-width: 1024px) {
+  .lg-row-layout {
+    flex-direction: row-reverse !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    padding: 40px 32px 60px !important;
+    gap: 48px !important;
+  }
+
+  /* Control deck is fixed width beside the phone */
+  .lg-row-layout > div:last-child {
+    max-width: 320px !important;
+    position: sticky;
+    top: 24px;
+    align-self: flex-start;
+  }
+}
+
+/* Keep the phone centered on wide screens and move only the control deck. */
+@media (min-width: 1280px) {
+  .lg-row-layout {
+    flex-direction: column !important;
+  }
+
+  .lg-row-layout > div:last-child {
+    position: absolute;
+    top: 40px;
+    right: 32px;
+    align-self: flex-start;
+  }
+}
+
+/* On medium screens (tablets): center phone, controls below but wider */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .lg-row-layout {
+    padding: 24px 24px 40px !important;
+    gap: 32px !important;
+  }
+}
+
+/* Small screens: compact padding */
+@media (max-width: 639px) {
+  .lg-row-layout {
+    padding: 16px 12px 32px !important;
+    gap: 20px !important;
+  }
+}
+
